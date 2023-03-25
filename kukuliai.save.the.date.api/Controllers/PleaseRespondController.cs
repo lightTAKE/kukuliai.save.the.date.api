@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace kukuliai.save.the.date.api.Controllers;
 
 [ApiController]
-[Route("rsvp-restapi/")]
+[Route("rsvp-restapi")]
 public class PleaseRespondController : ControllerBase
 {
     private readonly IRespondPleaseRepository _respondPleaseRepository;
@@ -15,7 +15,7 @@ public class PleaseRespondController : ControllerBase
         _respondPleaseRepository = respondPleaseRepository;
     }
     
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<string> Get()
     {
         var result = await _respondPleaseRepository.SelectAll();

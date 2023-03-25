@@ -12,6 +12,22 @@ builder.Services.AddSingleton(connectionString);
 builder.Services.AddTransient<ISqlClient, SqlClient>();
 builder.Services.AddSingleton<IRespondPleaseRepository, RespondPleaseRepository>();
 
+const string allowedOriginsPolicyName = "_allowedOrigins";
+var allowedOrigin = builder.Configuration["AllowedOrigin"];
+if (allowedOrigin is null)
+{
+    throw new ApplicationException("Allowed origin is not set");
+}
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowedOriginsPolicyName,
+        policy =>
+        {
+            policy.WithOrigins(allowedOrigin).AllowAnyHeader().AllowAnyMethod();
+        });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,6 +51,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(allowedOriginsPolicyName);
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
