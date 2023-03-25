@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace kukuliai.save.the.date.api.Controllers;
 
 [ApiController]
-[Route("rsvp/")]
+[Route("rsvp-restapi/")]
 public class PleaseRespondController : ControllerBase
 {
     private readonly IRespondPleaseRepository _respondPleaseRepository;
