@@ -2,15 +2,7 @@ using kukuliai.save.the.date.api.Persistence.Clients;
 using kukuliai.save.the.date.api.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    .AddJsonFile("appsettings.json")
-    .Build();
-
-var connectionString = configuration.GetConnectionString("KukuliaiDB");
+var connectionString = builder.Configuration.GetConnectionString("KukuliaiDB");
 if (connectionString is null)
 {
     throw new ApplicationException("Connection string not found");
