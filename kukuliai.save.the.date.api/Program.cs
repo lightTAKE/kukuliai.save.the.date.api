@@ -1,6 +1,24 @@
+using kukuliai.save.the.date.api.Persistence.Clients;
+using kukuliai.save.the.date.api.Persistence.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var connectionString = configuration.GetConnectionString("KukuliaiDB");
+if (connectionString is null)
+{
+    throw new ApplicationException("Connection string not found");
+}
+
+builder.Services.AddSingleton(connectionString);
+builder.Services.AddTransient<ISqlClient, SqlClient>();
+builder.Services.AddSingleton<IRespondPleaseRepository, RespondPleaseRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,9 +43,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
