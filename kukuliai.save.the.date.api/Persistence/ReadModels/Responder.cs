@@ -9,4 +9,6 @@ public class Responder
     public bool Attending { get; set; }
 
     public bool NeedTransport { get; set; }
+
+    public string Comments { get; set; }
 }
