@@ -1,6 +1,6 @@
-﻿using kukuliai.save.the.date.api.Persistence.Repositories;
+﻿using kukuliai.save.the.date.api.Controllers.Models;
+using kukuliai.save.the.date.api.Persistence.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace kukuliai.save.the.date.api.Controllers;
 
@@ -16,9 +16,16 @@ public class PleaseRespondController : ControllerBase
     }
     
     [HttpGet("all")]
-    public async Task<string> Get()
+    public async Task<IActionResult> Get()
     {
         var result = await _respondPleaseRepository.SelectAll();
-        return JsonConvert.SerializeObject(result);
+        return Ok(result);
+    }
+
+    [HttpPost("respond")]
+    public async Task<IActionResult> Respond([FromBody] RespondPleaseRequest request)
+    {
+        await _respondPleaseRepository.AddResponder(request.Name, request.Attending, request.NeedTransport, request.Comments);
+        return Ok();
     }
 }

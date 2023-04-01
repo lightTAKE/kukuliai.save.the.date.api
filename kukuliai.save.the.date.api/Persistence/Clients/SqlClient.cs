@@ -21,4 +21,14 @@ public class SqlClient : ISqlClient
             return await connection.QueryAsync<T>(commandParams);
         }
     }
+
+    public async Task<int> ExecuteAsync(string sql, object? param = null)
+    {
+        await using (var connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync(CancellationToken.None);
+            var commandParams = new CommandDefinition(sql, param, cancellationToken: CancellationToken.None);
+            return await connection.ExecuteAsync(commandParams);
+        }
+    }
 }
